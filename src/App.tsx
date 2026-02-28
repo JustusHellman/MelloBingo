@@ -69,10 +69,16 @@ interface BingoCell {
 }
 
 export default function App() {
-  const [grid, setGrid] = useState<BingoCell[]>([]);
+  const [grid, setGrid] = useState<BingoCell[]>(() => {
+    const saved = localStorage.getItem('MELLO_BINGO_GRID');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [selectedCell, setSelectedCell] = useState<BingoCell | null>(null);
   const [hasBingo, setHasBingo] = useState(false);
-  const [completedLines, setCompletedLines] = useState<string[]>([]);
+  const [completedLines, setCompletedLines] = useState<string[]>(() => {
+    const saved = localStorage.getItem('MELLO_BINGO_LINES');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [shareStatus, setShareStatus] = useState<'idle' | 'generating' | 'success' | 'error'>('idle');
   const exportRef = useRef<HTMLDivElement>(null);
 
@@ -87,11 +93,26 @@ export default function App() {
     setGrid(initialGrid);
     setHasBingo(false);
     setCompletedLines([]);
+    localStorage.removeItem('MELLO_BINGO_GRID');
+    localStorage.removeItem('MELLO_BINGO_LINES');
   }, []);
 
   useEffect(() => {
-    initGrid();
-  }, [initGrid]);
+    if (grid.length === 0) {
+      initGrid();
+    }
+  }, [grid.length, initGrid]);
+
+  // Save to localStorage
+  useEffect(() => {
+    if (grid.length > 0) {
+      localStorage.setItem('MELLO_BINGO_GRID', JSON.stringify(grid));
+    }
+  }, [grid]);
+
+  useEffect(() => {
+    localStorage.setItem('MELLO_BINGO_LINES', JSON.stringify(completedLines));
+  }, [completedLines]);
 
   // Check for bingo
   const checkBingo = useCallback((currentGrid: BingoCell[]) => {
