@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-mello-pink: #ff00ff;
+  --color-mello-purple: #4b0082;
+  --color-mello-gold: #ffd700;
+}
+
+body {
+  background: radial-gradient(circle at center, #2d004d 0%, #1a0033 100%);
+  color: white;
+  min-height: 100vh;
+  margin: 0;
+  font-family: var(--font-sans);
+}
+
+.mello-gradient {
+  background: linear-gradient(135deg, #ff00ff 0%, #4b0082 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bingo-cell-active {
+  background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+  color: #1a0033;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+@keyframes glitter {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+.glitter-text {
+  animation: glitter 2s infinite;
+  text-shadow: 0 0 10px #ff00ff, 0 0 20px #ff00ff;
+}
